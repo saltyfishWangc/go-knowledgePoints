@@ -132,5 +132,25 @@ func (mc *memCache) Clear() bool {
 
 // Keys 获取缓存中所有key的数量
 func (mc *memCache) Keys() int64 {
-	return 0
+	mc.locker.RLock()
+	defer mc.locker.RUnlock()
+	return int64(len(mc.values))
+}
+
+// clearExpireItem 定期清除已过期的缓存
+func (mc *memCache) clearExpireItem() {
+	timeTicker := time.NewTicker(mc.clearExpireItemTimeInterval)
+	defer timeTicker.Stop()
+	for {
+		select {
+		case <-timeTicker.C:
+			for key, item := range mc.values {
+				if item.expire != 0 && time.Now().After(item.expireTime) {
+					mc.locker.Lock()
+					mc.del(key)
+					mc.locker.Unlock()
+				}
+			}
+		}
+	}
 }
