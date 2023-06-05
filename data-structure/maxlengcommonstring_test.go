@@ -1,8 +1,11 @@
 package data_structure
 
-import "testing"
+import (
+	"testing"
+	string2 "wangc.com/go-knowledgePoints/data-structure/string"
+)
 
-func TestLongestCommonPrefix(t *testing.T) {
+func TestLongestCommonPrefix1(t *testing.T) {
 	str := []string{"flower", "flow", "flight"}
-	t.Log(longestCommonPrefix(str))
+	t.Log(string2.longestCommonPrefix(str))
 }

@@ -1,6 +1,6 @@
 package data_structure
 
-func longestCommonPrefix(strs []string) string {
+func longestCommonPrefix1(strs []string) string {
 	// 先拿到长度最短的字符串
 	// 循环遍历长度最短的字符串从最后一个字符开始比较，相等就往前取字符继续比较，不相等就返回""
 	targetStr := strs[0]
