@@ -1,10 +1,5 @@
 package linkedlist
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
 func removeNthFromEnd(head *ListNode, n int) *ListNode {
 	// 如何找到倒数第n个节点：让让一个指针走n个节点，然后再一个节点从头开始相同的步长一起走，等第一个指针走到最后一个节点时，第二个指针的节点就是倒数第N个节点
 	tmp := &ListNode{

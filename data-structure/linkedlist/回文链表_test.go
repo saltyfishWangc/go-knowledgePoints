@@ -1,7 +1,6 @@
 package linkedlist
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -16,32 +15,6 @@ func TestIsPalindrome(t *testing.T) {
 
 	//t.Logf("链表：%s 是否是回文链表：%t", printLinkedList(head), isPalindrome(head))
 	t.Logf("链表：%s 是否是回文链表：%t", printLinkedList(head), isPalindromeWithArray(head))
-}
-
-// createLinkedListWithSlice 根据数组指定的值创建链表，返回头节点
-func createLinkedListWithSlice(sl []int) *ListNode {
-	head := &ListNode{}
-	tmp := head
-	for _, val := range sl {
-		tmp.Next = &ListNode{Val: val}
-		tmp = tmp.Next
-	}
-	return head.Next
-}
-
-// printLinkedList 打印链表
-func printLinkedList(head *ListNode) string {
-	str := ""
-	p := head
-	for p != nil {
-		if str == "" {
-			str = fmt.Sprintf("%d", p.Val)
-		} else {
-			str = fmt.Sprintf("%s -> %d", str, p.Val)
-		}
-		p = p.Next
-	}
-	return str
 }
 
 // isPalindrome 判断链表是否是回文链表

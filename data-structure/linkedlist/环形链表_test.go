@@ -30,15 +30,3 @@ func hasCycle(head *ListNode) bool {
 	}
 	return false
 }
-
-func createLinkedListWithN(n int) *ListNode {
-	head := &ListNode{}
-	tmp := head
-	for i := 0; i < n; i++ {
-		tmp.Next = &ListNode{
-			Val: i,
-		}
-		tmp = tmp.Next
-	}
-	return head.Next
-}
