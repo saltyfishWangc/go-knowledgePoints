@@ -15,8 +15,31 @@ import (
 // 输入：flowerbed = [1,0,0,0,1], n = 2
 // 输出：false
 func TestCanPlaceFlowers(t *testing.T) {
+	flowered := []int{1, 0, 0, 0, 1}
+	n := 1
+
+	//flowered := []int{1, 0, 0, 0, 1}
+	//n := 2
+	t.Log(canPlaceFlowers(flowered, n))
 }
 
 func canPlaceFlowers(flowerbed []int, n int) bool {
-	return false
+	// 遍历数组，如果花已经种完了就没必要继续判断了
+	for i := 0; i < len(flowerbed) && n > 0; {
+		if flowerbed[i] == 1 {
+			// 要跳一格
+			i += 2
+		} else {
+			// 因为如果前一格等于1的话，i就会加2格，所以当flowerbed[i]=0的话，说明前面一格一定是0
+			// 判断下一格是否等于1，如果不等于1的话，那这一格就可以种花
+			if i+1 < len(flowerbed) && flowerbed[i+1] == 0 {
+				i += 2
+				n--
+			} else {
+				// 因为下一格是1，说明当前格不能种花，所以要跳3格
+				i += 3
+			}
+		}
+	}
+	return n == 0
 }
