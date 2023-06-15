@@ -163,3 +163,26 @@ func TestMultiReceive(t *testing.T) {
 
 	time.Sleep(2 * time.Second)
 }
+
+func TestChanPanic(t *testing.T) {
+	//1 给一个nil channel发送数据，会造成死锁
+	//var s chan int
+	//s <- 1
+	//t.Log("hello")
+
+	//2 从一个nil channel读取数据，会永久堵塞(也就是死锁)
+	//var s chan int
+	//<-s
+	//t.Log("hello")
+
+	//3 给一个已经关闭的channel发送数据，会引起panic
+	//s := make(chan int)
+	//close(s)
+	//s <- 1
+	//t.Log("hello")
+
+	//4 从一个已经关闭的channel读取数据，返回的是类型的零值
+	s := make(chan int)
+	close(s)
+	t.Log("hello ", <-s)
+}
