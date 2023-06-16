@@ -28,3 +28,24 @@ func typeAssertInSelect(v interface{}) {
 		fmt.Println(msg.Name)
 	}
 }
+
+type People interface {
+	Show()
+}
+type Student1 struct{}
+
+func (stu *Student1) Show() {}
+
+func live() People {
+	var stu *Student1
+	return stu
+}
+
+func TestInterface(t *testing.T) {
+	a := live()
+	if a == nil {
+		t.Log("AAAAAAA")
+	} else {
+		t.Log("BBBBBBB")
+	}
+}
