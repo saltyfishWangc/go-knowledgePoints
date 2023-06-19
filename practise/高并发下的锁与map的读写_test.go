@@ -1,8 +1,10 @@
 package practise
 
 import (
+	"context"
 	"fmt"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 )
@@ -15,11 +17,30 @@ func TestMapReadAndWriteWithConcurrent(t *testing.T) {
 
 type Ban struct {
 	visitIPs map[string]time.Time
-	lock     *sync.RWMutex
+	lock     sync.Mutex
 }
 
-func NewBan() *Ban {
-	return &Ban{visitIPs: make(map[string]time.Time)}
+func NewBan(ctx context.Context) *Ban {
+	ban := &Ban{visitIPs: make(map[string]time.Time)}
+	go func() {
+		timer := time.NewTimer(time.Minute)
+		for {
+			select {
+			case <-timer.C:
+				ban.lock.Lock()
+				for k, v := range ban.visitIPs {
+					if time.Now().Sub(v) >= time.Minute {
+						delete(ban.visitIPs, k)
+					}
+				}
+				ban.lock.Unlock()
+				timer.Reset(time.Minute)
+			case <-ctx.Done():
+				return
+			}
+		}
+	}()
+	return ban
 }
 func (o *Ban) visit(ip string) bool {
 	o.lock.Lock()
@@ -32,17 +53,23 @@ func (o *Ban) visit(ip string) bool {
 }
 
 func Test1(t *testing.T) {
-	success := 0
-	ban := NewBan()
+	success := int64(0)
+	ctx, cancelFunc := context.WithCancel(context.Background())
+	defer cancelFunc()
+	wg := sync.WaitGroup{}
+	ban := NewBan(ctx)
+	wg.Add(1000 * 100)
 	for i := 0; i < 1000; i++ {
 		for j := 0; j < 100; j++ {
-			go func() {
+			go func(j int) {
+				defer wg.Done()
 				ip := fmt.Sprintf("192.168.1.%d", j)
 				if !ban.visit(ip) {
-					success++
+					atomic.AddInt64(&success, 1)
 				}
-			}()
+			}(j)
 		}
 	}
+	wg.Wait()
 	fmt.Println("success:", success)
 }

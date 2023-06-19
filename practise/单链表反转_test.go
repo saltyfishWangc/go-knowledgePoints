@@ -31,6 +31,12 @@ func ReverseLinkedList(head *ListNode) *ListNode {
 	return cur
 }
 
+// ReverseLinkedListWithFinalN 从链表尾部开始，每n个节点成一组，反转链表，如果最后头部剩余的节点不足n个，不反转
+func ReverseLinkedListWithFinalN(head *ListNode, n int) *ListNode {
+	// 因为要从尾部开始，需要用前后指针，找到后N个节点，进行反转
+	return nil
+}
+
 func NewListNode(data interface{}) *ListNode {
 	return &ListNode{Data: data}
 }

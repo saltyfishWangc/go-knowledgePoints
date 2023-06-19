@@ -24,3 +24,18 @@ func changeMap(m map[int]int) {
 	m[5] = 5
 	m[6] = 6
 }
+
+func TestSliceArr(t *testing.T) {
+	str1 := []string{"a", "b", "c"}
+	str2 := str1[1:]
+	str2[1] = "new"
+	t.Log(str1)
+	str2 = append(str2, "z", "x", "y")
+	t.Log(str1)
+	t.Log(str2)
+}
+
+func TestSliceAndArrEqual(t *testing.T) {
+	t.Log([...]string{"1"} == [...]string{"1"}) // 数组只能与长度、类型相同的其他数组比较
+	//t.Log([]string{"1"} == []string{"1"})       // 切片之间不能直接比较
+}
